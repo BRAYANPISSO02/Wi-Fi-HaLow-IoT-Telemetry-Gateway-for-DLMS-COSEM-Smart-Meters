@@ -1,0 +1,162 @@
+services:
+  postgres:
+    restart: always
+    image: "postgres:16"
+    ports:
+      - "5432"
+    environment:
+      POSTGRES_DB: thingsboard
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d thingsboard"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+  kafka:
+    restart: always
+    image: "bitnamilegacy/kafka:4.0"
+    ports:
+      - "9092:9092" # to localhost:9092 from host machine
+      - "9093" # for KRaft controller
+    environment:
+      ALLOW_PLAINTEXT_LISTENER: "yes"
+      KAFKA_CFG_LISTENERS: "PLAINTEXT://:9092,CONTROLLER://:9093"
+      KAFKA_CFG_ADVERTISED_LISTENERS: "PLAINTEXT://:9092"
+      KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP: "CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT"
+      KAFKA_CFG_INTER_BROKER_LISTENER_NAME: "PLAINTEXT"
+      KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: "1"
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: "1"
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: "1"
+
+      KAFKA_CFG_PROCESS_ROLES: "controller,broker" # KRaft
+      KAFKA_CFG_NODE_ID: "0" # KRaft
+      KAFKA_CFG_CONTROLLER_LISTENER_NAMES: "CONTROLLER" # KRaft
+      KAFKA_CFG_CONTROLLER_QUORUM_VOTERS: "0@kafka:9093" # KRaft
+      KAFKA_CFG_LOG_RETENTION_MS: "300000"
+      KAFKA_CFG_SEGMENT_BYTES: "26214400"
+    volumes:
+      - kafka-data:/bitnami
+  thingsboard-ce:
+    restart: always
+    image: "thingsboard/tb-node:4.2.1"  # Actualizado para probar fix DTLS
+    hostname: thingsboard.server
+    ports:
+      - "8080:8080"
+      - "7070:7070"
+      - "1883:1883"
+      - "8883:8883"
+      - "5683:5683/udp"  # LwM2M Server (plain CoAP)
+      - "5687:5687/udp"  # LwM2M Bootstrap (plain CoAP)
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "10"
+    environment:
+      TB_SERVICE_ID: tb-ce-node
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/thingsboard
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      TB_QUEUE_TYPE: kafka
+      TB_KAFKA_SERVERS: kafka:9092
+
+      # ===== HTTP/HTTPS Configuration =====
+      HTTP_BIND_PORT: 8080
+      HTTP_BIND_ADDRESS: 0.0.0.0
+      SSL_ENABLED: false  # Cambiar a true para habilitar HTTPS
+      SSL_CREDENTIALS_TYPE: PEM  # PEM o KEYSTORE
+      SSL_PEM_CERT: /certs/http/server.pem
+      SSL_PEM_KEY: /certs/http/server_key.pem
+      # SSL_PEM_KEY_PASSWORD: your_key_password  # Opcional
+
+      # ===== MQTT Configuration =====
+      MQTT_ENABLED: true
+      MQTT_BIND_PORT: 1883
+      MQTT_BIND_ADDRESS: 0.0.0.0
+      # MQTT SSL/TLS Configuration
+      MQTT_SSL_ENABLED: false  # Cambiar a true para habilitar MQTTS
+      MQTT_SSL_BIND_PORT: 8883
+      MQTT_SSL_BIND_ADDRESS: 0.0.0.0
+      MQTT_SSL_PROTOCOL: TLSv1.2
+      MQTT_SSL_CREDENTIALS_TYPE: PEM  # PEM o KEYSTORE
+      MQTT_SSL_PEM_CERT: /certs/mqtt/mqttserver.pem
+      MQTT_SSL_PEM_KEY: /certs/mqtt/mqttserver_key.pem
+      # MQTT_SSL_PEM_KEY_PASSWORD: server_key_password  # Opcional
+      
+      # ===== CoAP Configuration =====
+      COAP_ENABLED: true
+      COAP_BIND_PORT: 5683
+      COAP_BIND_ADDRESS: 0.0.0.0
+      # CoAP DTLS Configuration
+      COAP_DTLS_ENABLED: false  # Cambiar a true para habilitar CoAPs
+      COAP_DTLS_BIND_PORT: 5684
+      COAP_DTLS_BIND_ADDRESS: 0.0.0.0
+      COAP_DTLS_RETRANSMISSION_TIMEOUT_MS: 9000
+      COAP_DTLS_CREDENTIALS_TYPE: PEM  # PEM o KEYSTORE
+      COAP_DTLS_PEM_CERT: /certs/coap/coapserver.pem
+      COAP_DTLS_PEM_KEY: /certs/coap/coapserver_key.pem
+      # COAP_DTLS_PEM_KEY_PASSWORD: server_key_password  # Opcional
+
+      # ===== LwM2M Server Configuration =====
+      LWM2M_ENABLED: true
+      LWM2M_BIND_PORT: 5685
+      LWM2M_BIND_ADDRESS: 0.0.0.0
+      # LwM2M Server DTLS (puerto 5686)
+      LWM2M_SECURITY_BIND_PORT: 5686
+      LWM2M_SECURITY_BIND_ADDRESS: 0.0.0.0
+      LWM2M_SERVER_CREDENTIALS_ENABLED: false  # ❌ Bug persiste en v4.2.1
+      LWM2M_SERVER_CREDENTIALS_TYPE: KEYSTORE  # PEM o KEYSTORE
+      LWM2M_SERVER_KEY_STORE: file:/certs/lwm2m/lwm2mserver.jks
+      LWM2M_SERVER_KEY_STORE_PASSWORD: thingsboard
+      LWM2M_SERVER_KEY_ALIAS: lwm2m
+      LWM2M_SERVER_KEY_PASSWORD: thingsboard
+      
+      # ===== LwM2M Bootstrap Server Configuration =====
+      LWM2M_ENABLED_BS: true
+      LWM2M_BS_BIND_PORT: 5687
+      LWM2M_BS_BIND_ADDRESS: 0.0.0.0
+      # LwM2M Bootstrap DTLS (puerto 5688)
+      LWM2M_BS_SECURITY_BIND_PORT: 5688
+      LWM2M_BS_SECURITY_BIND_ADDRESS: 0.0.0.0
+      LWM2M_BS_CREDENTIALS_ENABLED: false  # ❌ Bug persiste en v4.2.1
+      LWM2M_BS_CREDENTIALS_TYPE: KEYSTORE  # PEM o KEYSTORE
+      LWM2M_BS_KEY_STORE: file:/certs/lwm2m/lwm2mserver.jks
+      LWM2M_BS_KEY_STORE_PASSWORD: thingsboard
+      LWM2M_BS_KEY_ALIAS: lwm2m
+      LWM2M_BS_KEY_PASSWORD: thingsboard
+
+      # ===== LwM2M Trust Store (para validar certificados de clientes) =====
+      LWM2M_TRUST_CREDENTIALS_ENABLED: false  # Cambiar a true si usas autenticación de cliente
+      LWM2M_TRUST_CREDENTIALS_TYPE: PEM  # PEM o KEYSTORE
+      LWM2M_TRUST_PEM_CERT: /certs/lwm2m/lwm2mtruststorechain.pem
+      
+      # ===== LwM2M Security Hardening =====
+      LWM2M_RECOMMENDED_CIPHERS: true  # Solo cipher suites recomendados
+      LWM2M_RECOMMENDED_SUPPORTED_GROUPS: true  # Solo curvas elípticas recomendadas
+      LWM2M_DTLS_RETRANSMISSION_TIMEOUT_MS: 9000
+      # LWM2M_DTLS_CONNECTION_ID_LENGTH: 4  # Opcional, habilita DTLS CID (RFC 9146)
+    volumes:
+      # Montar directorio de certificados (crear antes: mkdir -p certs/{http,mqtt,coap,lwm2m})
+      - ./certs:/certs:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+      kafka:
+        condition: service_started
+
+  # ===== Nota sobre DTLS =====
+  # DTLS (Datagram TLS sobre UDP) es muy específico y difícil de implementar
+  # La mayoría de proxies no lo soportan (stunnel sin soporte DTLS, nginx no UDP+TLS)
+  # Alternativa: Usar ThingsBoard en modo plain para desarrollo
+  # Para producción: VPN/IPSec o actualizar ThingsBoard cuando corrijan el bug
+
+volumes:
+  postgres-data:
+    name: tb-postgres-data
+    driver: local
+  kafka-data:
+    name: tb-ce-kafka-data
+    driver: local
