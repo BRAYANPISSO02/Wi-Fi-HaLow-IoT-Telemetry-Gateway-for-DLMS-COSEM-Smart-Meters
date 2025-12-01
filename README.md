@@ -1,6 +1,6 @@
-# DLMS Smart Metering IoT Platform
+# Wi-Fi-HaLow-IoT-Telemetry-Gateway-for-DLMS-COSEM-Smart-Meters
 
-## Sistema de Telemetría IoT para Medidores Inteligentes DLMS/COSEM
+## Sistema de Telemetría IoT para Medidores Inteligentes DLMS/COSEM con Transmisión de Datos sobre Wi-Fi HaLow
 
 [![Python Version](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
 [![Docker](https://img.shields.io/badge/docker-20.10%2B-blue.svg)](https://www.docker.com/)
