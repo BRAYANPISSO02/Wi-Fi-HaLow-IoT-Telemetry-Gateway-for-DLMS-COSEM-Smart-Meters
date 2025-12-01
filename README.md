@@ -1,6 +1,6 @@
-# SmartMeter2ThingsBoard-Gateway
+# DLMS Smart Metering IoT Platform
 
-## Sistema Integral de Telemetría IoT para Medidores Inteligentes DLMS/COSEM
+## Sistema de Telemetría IoT para Medidores Inteligentes DLMS/COSEM
 
 [![Python Version](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
 [![Docker](https://img.shields.io/badge/docker-20.10%2B-blue.svg)](https://www.docker.com/)
@@ -25,7 +25,7 @@
 - [Características Principales](#-características-principales)
 - [Arquitectura del Sistema](#-arquitectura-del-sistema)
 - [Componentes del Proyecto](#-componentes-del-proyecto)
-- [Requisitos del Sistema](#-requisitos-del-sistema)
+- [Requisitos del ](#-requisitos-del-)
 - [Guía de Instalación Rápida](#-guía-de-instalación-rápida)
 - [Estructura del Repositorio](#-estructura-del-repositorio)
 - [Documentación Detallada](#-documentación-detallada)
