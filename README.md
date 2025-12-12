@@ -9,7 +9,7 @@
 
 ---
 
-## 📄 Información del Proyecto
+## Información del Proyecto
 
 **Proyecto de Grado** - Ingeniería Electrónica  
 **Universidad:** Universidad Nacional de Colombia - Sede Manizales  
@@ -19,7 +19,7 @@
 
 ---
 
-## 📖 Tabla de Contenidos
+## Tabla de Contenidos
 
 - [Descripción General](#-descripción-general)
 - [Características Principales](#-características-principales)
@@ -36,17 +36,17 @@
 
 ---
 
-## 🎯 Descripción General
+## Descripción General
 
 **Wi-Fi-HaLow-IoT-Telemetry-Gateway-for-DLMS-COSEM-Smart-Meters** es una solución integral de telemetría IoT de extremo a extremo que conecta medidores inteligentes basados en el protocolo **DLMS/COSEM** con la plataforma **ThingsBoard IoT** para el monitoreo, almacenamiento y visualización en tiempo real de variables eléctricas críticas.
 
 Este sistema permite la transformación digital de infraestructuras de medición eléctrica tradicionales, habilitando capacidades de:
-- 📊 **Monitoreo remoto en tiempo real** de variables eléctricas
-- 🔄 **Gestión simultánea de múltiples medidores** con arquitectura escalable
-- 📈 **Análisis histórico** de consumo y parámetros eléctricos
-- 🚨 **Generación automática de alarmas** ante condiciones anormales
-- 📱 **Visualización intuitiva** mediante dashboards web personalizables
-- 🔐 **Comunicación segura** con soporte SSL/TLS
+- **Monitoreo remoto en tiempo real** de variables eléctricas
+- **Gestión simultánea de múltiples medidores** con arquitectura escalable
+- **Análisis histórico** de consumo y parámetros eléctricos
+- **Generación automática de alarmas** ante condiciones anormales
+- **Visualización intuitiva** mediante dashboards web personalizables
+- **Comunicación segura** con soporte SSL/TLS
 
 ### Variables Monitoreadas
 
@@ -62,131 +62,41 @@ El sistema captura y transmite las siguientes variables eléctricas:
 
 ---
 
-## ✨ Características Principales
+## Características Principales
 
 ### Sistema de Adquisición de Datos (DLMS)
 
-- ✅ **Protocolo DLMS/COSEM** - Implementación completa del estándar IEC 62056
-- ✅ **Multi-medidor concurrente** - Gestión simultánea de múltiples dispositivos
-- ✅ **Auto-recuperación inteligente** - 3 niveles de recuperación ante fallos
-- ✅ **Alta disponibilidad** - Circuit breaker para prevención de loops
-- ✅ **Optimización de rendimiento** - Caché de scalers para lecturas más rápidas
-- ✅ **QoS nivel 1** - Garantía de entrega de mensajes MQTT
+- **Protocolo DLMS/COSEM** - Implementación completa del estándar IEC 62056
+- **Multi-medidor concurrente** - Gestión simultánea de múltiples dispositivos
+- **Auto-recuperación inteligente** - 3 niveles de recuperación ante fallos
+- **Alta disponibilidad** - Circuit breaker para prevención de loops
+- **Optimización de rendimiento** - Caché de scalers para lecturas más rápidas
+- **QoS nivel 1** - Garantía de entrega de mensajes MQTT
 
 ### Plataforma de Visualización (ThingsBoard)
 
-- ✅ **Infraestructura contenedorizada** - Despliegue con Docker Compose
-- ✅ **Multi-protocolo** - Soporte para MQTT, HTTP, CoAP/LwM2M
-- ✅ **Base de datos time-series** - PostgreSQL 16 para almacenamiento eficiente
-- ✅ **Procesamiento de eventos** - Apache Kafka para mensajería asíncrona
-- ✅ **Dashboards personalizables** - Interfaz web intuitiva
-- ✅ **API REST completa** - Integración con sistemas externos
+- **Infraestructura contenedorizada** - Despliegue con Docker Compose
+- **Multi-protocolo** - Soporte para MQTT, HTTP, CoAP/LwM2M
+- **Base de datos time-series** - PostgreSQL 16 para almacenamiento eficiente
+- **Procesamiento de eventos** - Apache Kafka para mensajería asíncrona
+- **Dashboards personalizables** - Interfaz web intuitiva
+- **API REST completa** - Integración con sistemas externos
 
 ### Gestión y Monitoreo
 
-- ✅ **Base de datos SQLite** - Configuración centralizada de medidores
-- ✅ **CLI de administración** - Herramientas de línea de comandos
-- ✅ **Sistema de logs estructurados** - Trazabilidad completa
-- ✅ **Métricas de rendimiento** - Tasas de éxito, uptime, latencias
-- ✅ **Generación de alarmas** - Notificaciones automáticas de eventos
+- **Base de datos SQLite** - Configuración centralizada de medidores
+- **CLI de administración** - Herramientas de línea de comandos
+- **Sistema de logs estructurados** - Trazabilidad completa
+- **Métricas de rendimiento** - Tasas de éxito, uptime, latencias
+- **Generación de alarmas** - Notificaciones automáticas de eventos
 
 ---
 
-## 🏗️ Arquitectura del Sistema
+## Arquitectura del Sistema
 
 ### Diagrama de Arquitectura Completa
 
-```
-┌──────────────────────────────────────────────────────────────────────────────┐
-│                          CAPA FÍSICA - MEDIDORES                             │
-│                                                                              │
-│  ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐        │
-│  │ Medidor DLMS #1 │    │ Medidor DLMS #2 │    │ Medidor DLMS #N │        │
-│  │ 192.168.1.128   │    │ 192.168.1.129   │    │ 192.168.1.XXX   │        │
-│  │ Puerto: 3333    │    │ Puerto: 3333    │    │ Puerto: 3333    │        │
-│  └────────┬────────┘    └────────┬────────┘    └────────┬────────┘        │
-└───────────┼──────────────────────┼──────────────────────┼──────────────────┘
-            │                      │                      │
-            │ DLMS/COSEM over TCP/IP (Protocolo IEC 62056)│
-            │                      │                      │
-┌───────────▼──────────────────────▼──────────────────────▼──────────────────┐
-│              CAPA DE ADQUISICIÓN - DLMS TELEMETRY ORCHESTRATOR             │
-│                          (Python Application)                               │
-│                                                                              │
-│  ┌────────────────────────────────────────────────────────────────────┐    │
-│  │              dlms_multi_meter_bridge.py (Orquestador)              │    │
-│  │                 • Gestión de múltiples workers                     │    │
-│  │                 • Auto-recuperación multinivel                     │    │
-│  │                 • Monitoreo de salud del sistema                   │    │
-│  └────────────────────────────┬───────────────────────────────────────┘    │
-│                               │                                             │
-│  ┌───────────────────┐  ┌─────┴──────┐  ┌───────────────────┐            │
-│  │  MeterWorker #1   │  │ Workers    │  │  MeterWorker #N   │            │
-│  │  ┌─────────────┐  │  │ Pool       │  │  ┌─────────────┐  │            │
-│  │  │ DLMS Poller │  │  │ (Asyncio)  │  │  │ DLMS Poller │  │            │
-│  │  │   Reader    │◄─┼──┤            ├──►  │   Reader    │  │            │
-│  │  └──────┬──────┘  │  └────────────┘  │  └──────┬──────┘  │            │
-│  │         │         │                   │         │         │            │
-│  │  ┌──────▼──────┐  │                   │  ┌──────▼──────┐  │            │
-│  │  │MQTT Publisher│  │                   │  │MQTT Publisher│  │            │
-│  │  │  (QoS=1)    │  │                   │  │  (QoS=1)    │  │            │
-│  │  └──────┬──────┘  │                   │  └──────┬──────┘  │            │
-│  └─────────┼─────────┘                   └─────────┼─────────┘            │
-│            │                                       │                       │
-│            └───────────────────┬───────────────────┘                       │
-│                                │ JSON Telemetry                            │
-│                      ┌─────────▼─────────┐                                 │
-│                      │  SQLite Database  │                                 │
-│                      │  • Configuración  │                                 │
-│                      │  • Métricas       │                                 │
-│                      │  • Alarmas        │                                 │
-│                      └───────────────────┘                                 │
-│                                                                              │
-└──────────────────────────────┬───────────────────────────────────────────────┘
-                               │
-                               │ MQTT Protocol (QoS=1)
-                               │ Topic: v1/devices/+/telemetry
-                               │
-┌──────────────────────────────▼───────────────────────────────────────────────┐
-│                  CAPA DE PLATAFORMA IoT - THINGSBOARD CE                     │
-│                        (Docker Compose Stack)                                │
-│                                                                              │
-│  ┌────────────────────────────────────────────────────────────────────┐    │
-│  │                    ThingsBoard CE 4.2.1                            │    │
-│  │  ┌──────────────┐  ┌──────────────┐  ┌──────────────────────┐   │    │
-│  │  │ MQTT Broker  │  │ HTTP Server  │  │  Rule Engine         │   │    │
-│  │  │ (Puerto 1883)│  │ (Puerto 8080)│  │  • Procesamiento     │   │    │
-│  │  └──────┬───────┘  └──────┬───────┘  │  • Transformación    │   │    │
-│  │         │                 │          │  • Alarmas           │   │    │
-│  │         └────────┬────────┘          └──────────┬───────────┘   │    │
-│  │                  ▼                              ▼               │    │
-│  │         ┌────────────────┐          ┌────────────────────┐    │    │
-│  │         │   Telemetry    │          │    Web UI          │    │    │
-│  │         │   Processing   │          │  • Dashboards      │    │    │
-│  │         └────────┬───────┘          │  • Widgets         │    │    │
-│  │                  │                  │  • Device Mgmt     │    │    │
-│  │                  │                  └────────────────────┘    │    │
-│  └──────────────────┼───────────────────────────────────────────────┘    │
-│                     │                                                     │
-│                     ▼                                                     │
-│  ┌────────────────────────────────┐        ┌──────────────────────┐    │
-│  │   Apache Kafka 4.0 (KRaft)     │◄──────►│  PostgreSQL 16       │    │
-│  │   Sistema de Mensajería        │        │  Base de Datos       │    │
-│  │   • Cola de eventos            │        │  • Time-series       │    │
-│  │   • Procesamiento asíncrono    │        │  • Metadatos         │    │
-│  │   • Alta disponibilidad        │        │  • Configuración     │    │
-│  └────────────────────────────────┘        └──────────────────────┘    │
-│                                                                           │
-└───────────────────────────────────────────────────────────────────────────┘
-                                  │
-                                  ▼
-                    ┌─────────────────────────────┐
-                    │  USUARIOS FINALES           │
-                    │  • Navegadores Web          │
-                    │  • Aplicaciones Móviles     │
-                    │  • APIs de Integración      │
-                    └─────────────────────────────┘
-```
+<img width="751" height="1051" alt="Arquitectura general del sistema drawio (3)" src="https://github.com/user-attachments/assets/c29ee080-ba01-469e-bc1e-2f32546916bb" />
 
 ### Flujo de Datos
 
@@ -213,7 +123,7 @@ El sistema captura y transmite las siguientes variables eléctricas:
 
 ---
 
-## 🧩 Componentes del Proyecto
+## Componentes del Proyecto
 
 El sistema está compuesto por dos módulos principales independientes pero complementarios:
 
@@ -261,7 +171,7 @@ Plataforma de infraestructura IoT que proporciona:
 
 ---
 
-## 💻 Requisitos del Sistema
+## Requisitos del Sistema
 
 ### Hardware Mínimo
 
@@ -294,7 +204,7 @@ Plataforma de infraestructura IoT que proporciona:
 
 ---
 
-## 🚀 Guía de Instalación Rápida
+## Guía de Instalación Rápida
 
 ### Pre-requisitos
 
@@ -398,12 +308,12 @@ cursor.execute("""
     1,                             # ThingsBoard habilitado
     'localhost',                   # Host ThingsBoard
     1883,                          # Puerto MQTT
-    'TU_TOKEN_DE_THINGSBOARD'      # 👈 Token copiado en Paso 2
+    'TU_TOKEN_DE_THINGSBOARD'      # Token copiado en Paso 2
 ))
 
 conn.commit()
 conn.close()
-print("✅ Medidor configurado")
+print("Medidor configurado")
 ```
 
 Ejecutar:
@@ -442,20 +352,20 @@ python3 dlms_multi_meter_bridge.py
    - active_power
    - active_energy
 
-**¡Sistema funcionando! 🎉**
+**¡Sistema funcionando!**
 
 ---
 
-## 📁 Estructura del Repositorio
+## Estructura del Repositorio
 
 ```
 Wi-Fi-HaLow-IoT-Telemetry-Gateway-for-DLMS-COSEM-Smart-Meters/
 │
-├── README.md                          # 📖 Este archivo (documentación principal)
+├── README.md                          # Este archivo (documentación principal)
 │
-├── dlms_telemetry_orchestrator/       # 🔌 Módulo de adquisición DLMS
+├── dlms_telemetry_orchestrator/       # Módulo de adquisición DLMS
 │   ├── README.md                      # Documentación del orquestador
-│   ├── dlms_multi_meter_bridge.py     # ⭐ Script principal
+│   ├── dlms_multi_meter_bridge.py     # Script principal
 │   ├── dlms_poller_production.py      # Cliente DLMS optimizado
 │   ├── tb_mqtt_client.py              # Cliente MQTT para ThingsBoard
 │   ├── meter_cli.py                   # CLI de administración
@@ -471,11 +381,11 @@ Wi-Fi-HaLow-IoT-Telemetry-Gateway-for-DLMS-COSEM-Smart-Meters/
 │   ├── logs/                          # Archivos de log
 │   └── docs/                          # Documentación técnica
 │
-├── thingsboard_telemetry_docker/      # 🐳 Módulo de plataforma IoT
+├── thingsboard_telemetry_docker/      # Módulo de plataforma IoT
 │   ├── README.md                      # Documentación de ThingsBoard
 │   │
 │   └── thingsboard_telemetry_visualization/
-│       ├── docker-compose.yml         # ⭐ Configuración de servicios
+│       ├── docker-compose.yml         # Configuración de servicios
 │       ├── up.sh                      # Script de inicio
 │       ├── down.sh                    # Script de detención
 │       ├── install.sh                 # Inicialización de BD
@@ -484,7 +394,7 @@ Wi-Fi-HaLow-IoT-Telemetry-Gateway-for-DLMS-COSEM-Smart-Meters/
 │       ├── reset.sh                   # Reinicio completo
 │       └── certs/                     # Certificados SSL/TLS
 │
-└── gateway/                           # ⚙️ ThingsBoard Gateway (opcional)
+└── gateway/                           # ThingsBoard Gateway (opcional)
     ├── README.md                      # Documentación del gateway
     ├── config/                        # Configuraciones de conectores
     │   ├── dlms_connector.json       # Configuración DLMS
@@ -494,7 +404,7 @@ Wi-Fi-HaLow-IoT-Telemetry-Gateway-for-DLMS-COSEM-Smart-Meters/
 
 ---
 
-## 📚 Documentación Detallada
+## Documentación Detallada
 
 Cada módulo cuenta con documentación específica y detallada:
 
@@ -518,7 +428,7 @@ Cada módulo cuenta con documentación específica y detallada:
 
 ---
 
-## 💡 Casos de Uso
+## Casos de Uso
 
 ### Caso de Uso 1: Monitoreo Residencial
 
@@ -558,7 +468,7 @@ Cada módulo cuenta con documentación específica y detallada:
 
 ---
 
-## 🤝 Contribuciones
+## Contribuciones
 
 Este proyecto es parte de un trabajo de grado. Las contribuciones son bienvenidas siguiendo estas directrices:
 
@@ -572,16 +482,16 @@ Este proyecto es parte de un trabajo de grado. Las contribuciones son bienvenida
 
 ### Áreas de Contribución
 
-- 🐛 Reporte de bugs
-- 💡 Nuevas funcionalidades
-- 📖 Mejoras en documentación
-- 🧪 Casos de prueba
-- 🌐 Traducciones
-- 🎨 Mejoras en dashboards
+- Reporte de bugs
+- Nuevas funcionalidades
+- Mejoras en documentación
+- Casos de prueba
+- Traducciones
+- Mejoras en dashboards
 
 ---
 
-## 📜 Licencia
+## Licencia
 
 Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) para más detalles.
 
