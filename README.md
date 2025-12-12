@@ -38,7 +38,7 @@
 
 ## 🎯 Descripción General
 
-**SmartMeter2ThingsBoard-Gateway** es una solución integral de telemetría IoT de extremo a extremo que conecta medidores inteligentes basados en el protocolo **DLMS/COSEM** con la plataforma **ThingsBoard IoT** para el monitoreo, almacenamiento y visualización en tiempo real de variables eléctricas críticas.
+**Wi-Fi-HaLow-IoT-Telemetry-Gateway-for-DLMS-COSEM-Smart-Meters** es una solución integral de telemetría IoT de extremo a extremo que conecta medidores inteligentes basados en el protocolo **DLMS/COSEM** con la plataforma **ThingsBoard IoT** para el monitoreo, almacenamiento y visualización en tiempo real de variables eléctricas críticas.
 
 Este sistema permite la transformación digital de infraestructuras de medición eléctrica tradicionales, habilitando capacidades de:
 - 📊 **Monitoreo remoto en tiempo real** de variables eléctricas
@@ -318,8 +318,8 @@ sudo apt install -y python3.10 python3.10-venv python3-pip
 3. **Clonar el repositorio:**
 
 ```bash
-git clone https://github.com/BRAYANPISSO02/SmartMeter2ThingsBoard-Gateway.git
-cd SmartMeter2ThingsBoard-Gateway
+git clone https://github.com/BRAYANPISSO02/Wi-Fi-HaLow-IoT-Telemetry-Gateway-for-DLMS-COSEM-Smart-Meters.git
+cd Wi-Fi-HaLow-IoT-Telemetry-Gateway-for-DLMS-COSEM-Smart-Meters
 ```
 
 ### Instalación del Sistema Completo
@@ -449,7 +449,7 @@ python3 dlms_multi_meter_bridge.py
 ## 📁 Estructura del Repositorio
 
 ```
-SmartMeter2ThingsBoard-Gateway/
+Wi-Fi-HaLow-IoT-Telemetry-Gateway-for-DLMS-COSEM-Smart-Meters/
 │
 ├── README.md                          # 📖 Este archivo (documentación principal)
 │
@@ -683,7 +683,7 @@ Universidad Nacional de Colombia - Sede Manizales
 
 <div align="center">
 
-**[⬆ Volver arriba](#smartmeter2thingsboard-gateway)**
+**[⬆ Volver arriba](#Wi-Fi-HaLow-IoT-Telemetry-Gateway-for-DLMS-COSEM-Smart-Meters)**
 
 ---
 
