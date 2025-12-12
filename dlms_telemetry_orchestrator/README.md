@@ -2,7 +2,7 @@
 
 **Proyecto de Grado** - Ingeniería Electrónica  
 **Autor:** Brayan Ricardo Pisso Ramírez  
-**Director:** Gustavo Adolfo Osorio Londoño
+**Director:** Gustavo Adolfo Osorio Londoño 
 **Universidad:** Universidad Nacional de Colombia - Sede Manizales  
 **Año:** 2025
 
