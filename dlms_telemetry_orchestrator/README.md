@@ -8,7 +8,7 @@
 
 ---
 
-## 📄 Resumen Ejecutivo
+## Resumen Ejecutivo
 
 Este proyecto implementa un **sistema de telemetría IoT** para la adquisición, transmisión y almacenamiento de datos eléctricos en tiempo real desde medidores inteligentes que implementan el protocolo **DLMS/COSEM** (Device Language Message Specification/Companion Specification for Energy Metering). 
 
@@ -16,13 +16,13 @@ El sistema permite monitorear de forma remota y continua variables eléctricas c
 
 ### Características Principales
 
-- ✅ **Lectura automática** de medidores DLMS/COSEM vía TCP/IP
-- ✅ **Multi-medidor concurrente** - Gestión simultánea de múltiples dispositivos
-- ✅ **Auto-recuperación** - Sistema robusto con 3 niveles de recuperación ante fallos
-- ✅ **Publicación MQTT** - Transmisión de datos con QoS nivel 1 (garantía de entrega)
-- ✅ **Almacenamiento local** - Base de datos SQLite para configuración y métricas
-- ✅ **Monitoreo en tiempo real** - Detección de fallos y generación de alarmas
-- ✅ **Escalabilidad** - Arquitectura modular para añadir medidores sin modificar código
+- **Lectura automática** de medidores DLMS/COSEM vía TCP/IP
+- **Multi-medidor concurrente** - Gestión simultánea de múltiples dispositivos
+- **Auto-recuperación** - Sistema robusto con 3 niveles de recuperación ante fallos
+- **Publicación MQTT** - Transmisión de datos con QoS nivel 1 (garantía de entrega)
+- **Almacenamiento local** - Base de datos SQLite para configuración y métricas
+- **Monitoreo en tiempo real** - Detección de fallos y generación de alarmas
+- **Escalabilidad** - Arquitectura modular para añadir medidores sin modificar código
 
 ### Alcance del Sistema
 
@@ -47,84 +47,11 @@ El sistema permite monitorear de forma remota y continua variables eléctricas c
 
 ---
 
-## 🏗️ Arquitectura del Sistema
+## Arquitectura del Sistema
 
 ### Diagrama de Bloques
 
-```
-┌──────────────────────────────────────────────────────────────────┐
-│                     CAPA FÍSICA - MEDIDORES                      │
-│                                                                  │
-│  ┌──────────────────┐           ┌──────────────────┐           │
-│  │  Medidor DLMS #1 │           │  Medidor DLMS #2 │           │
-│  │  IP: 192.168.x.x │           │  IP: 192.168.x.x │           │
-│  │  Puerto: 3333    │           │  Puerto: 3333    │           │
-│  │                  │           │                  │           │
-│  │  Variables:      │           │  Variables:      │           │
-│  │  • Voltaje (V)   │           │  • Voltaje (V)   │           │
-│  │  • Corriente (A) │           │  • Corriente (A) │           │
-│  │  • Frecuencia    │           │  • Frecuencia    │           │
-│  │  • Potencia (W)  │           │  • Potencia (W)  │           │
-│  │  • Energía (Wh)  │           │  • Energía (Wh)  │           │
-│  └────────┬─────────┘           └────────┬─────────┘           │
-│           │                              │                      │
-└───────────┼──────────────────────────────┼──────────────────────┘
-            │                              │
-            │    Protocolo DLMS/COSEM      │
-            │    sobre TCP/IP (puerto 3333)│
-            │                              │
-┌───────────▼──────────────────────────────▼──────────────────────┐
-│              CAPA DE APLICACIÓN - PYTHON                         │
-│                                                                  │
-│  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓  │
-│  ┃  dlms_multi_meter_bridge.py                              ┃  │
-│  ┃  (SCRIPT PRINCIPAL - Orquestador)                        ┃  │
-│  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛  │
-│                                                                  │
-│  ┌────────────────────┐          ┌────────────────────┐        │
-│  │  MeterWorker #1    │          │  MeterWorker #2    │        │
-│  │  ┌──────────────┐  │          │  ┌──────────────┐  │        │
-│  │  │ DLMS Poller  │  │          │  │ DLMS Poller  │  │        │
-│  │  │ - Conexión   │  │          │  │ - Conexión   │  │        │
-│  │  │ - Lectura    │  │          │  │ - Lectura    │  │        │
-│  │  │ - Parseo     │  │          │  │ - Parseo     │  │        │
-│  │  └──────┬───────┘  │          │  └──────┬───────┘  │        │
-│  │         │          │          │         │          │        │
-│  │  ┌──────▼───────┐  │          │  ┌──────▼───────┐  │        │
-│  │  │ MQTT Client  │  │          │  │ MQTT Client  │  │        │
-│  │  │ - Formateo   │  │          │  │ - Formateo   │  │        │
-│  │  │ - Publicación│  │          │  │ - Publicación│  │        │
-│  │  │ - QoS=1      │  │          │  │ - QoS=1      │  │        │
-│  │  └──────┬───────┘  │          │  └──────┬───────┘  │        │
-│  └─────────┼──────────┘          └─────────┼──────────┘        │
-│            │                               │                   │
-│            └───────────────┬───────────────┘                   │
-│                            │                                   │
-│                  ┌─────────▼─────────┐                         │
-│                  │  admin/database.py│                         │
-│                  │  SQLite Database  │                         │
-│                  │  • Configuración  │                         │
-│                  │  • Métricas       │                         │
-│                  │  • Alarmas        │                         │
-│                  └───────────────────┘                         │
-│                                                                  │
-└──────────────────────────┬───────────────────────────────────────┘
-                           │
-                           │ MQTT Protocol
-                           │ (QoS=1, JSON payload)
-                           │
-┌──────────────────────────▼───────────────────────────────────────┐
-│                  PLATAFORMA IoT - ThingsBoard                    │
-│                  (Instalación Externa)                           │
-│                                                                  │
-│  • Recepción de telemetría vía MQTT                             │
-│  • Almacenamiento en base de datos time-series                  │
-│  • Dashboards de visualización en tiempo real                   │
-│  • Generación de alarmas y notificaciones                       │
-│  • Análisis histórico de datos                                  │
-│                                                                  │
-└──────────────────────────────────────────────────────────────────┘
-```
+<img width="800" height="1056" alt="Arquitectura interna de la capa de adquisición drawio (1)" src="https://github.com/user-attachments/assets/73958892-0a62-41c1-a122-62f4326820f2" />
 
 ### Componentes del Sistema
 
@@ -188,7 +115,7 @@ meter_cli.py follow <id>       # Seguir logs en tiempo real
 
 ---
 
-## 📦 Requisitos del Sistema
+## Requisitos del Sistema
 
 ### Hardware
 
@@ -242,10 +169,10 @@ uvicorn>=0.24.0        # Servidor ASGI
 ### Medidores Compatibles
 
 El sistema es compatible con medidores que cumplan:
-- ✅ Protocolo **DLMS/COSEM** (IEC 62056)
-- ✅ Interfaz **Ethernet TCP/IP** (puerto 3333 estándar)
-- ✅ Soporte para **HDLC** (High-Level Data Link Control)
-- ✅ Implementación de **códigos OBIS** estándar
+- Protocolo **DLMS/COSEM** (IEC 62056)
+- Interfaz **Ethernet TCP/IP** (puerto 3333 estándar)
+- Soporte para **HDLC** (High-Level Data Link Control)
+- Implementación de **códigos OBIS** estándar
 
 **Medidores probados:**
 - Microstar DLMS
@@ -253,7 +180,7 @@ El sistema es compatible con medidores que cumplan:
 
 ---
 
-## 🚀 Instalación y Configuración
+## Instalación y Configuración
 
 ### Paso 1: Clonar el Repositorio
 
@@ -347,7 +274,7 @@ cursor.execute("""
 
 conn.commit()
 conn.close()
-print("✅ Medidor configurado exitosamente")
+print("Medidor configurado exitosamente")
 ```
 
 Ejecutar:
@@ -392,7 +319,7 @@ python3 meter_cli.py list
 python3 meter_cli.py test 1
 
 # Salida esperada:
-# ✅ TCP connection successful to 192.168.1.128:3333
+# TCP connection successful to 192.168.1.128:3333
 ```
 
 ### Paso 7: Configurar ThingsBoard (Externo)
@@ -430,7 +357,7 @@ docker run -d --name thingsboard \
 
 ---
 
-## ▶️ Ejecución del Sistema
+## Ejecución del Sistema
 
 ### Modo Desarrollo (Interactivo)
 
@@ -547,7 +474,7 @@ mosquitto_sub -h localhost -p 1883 -t "v1/devices/+/telemetry" -u "TU_TOKEN" -v
 
 ---
 
-## 📊 Códigos OBIS Soportados
+## Códigos OBIS Soportados
 
 El sistema lee las siguientes variables eléctricas usando códigos OBIS estándar:
 
@@ -567,7 +494,7 @@ El sistema lee las siguientes variables eléctricas usando códigos OBIS estánd
 
 ---
 
-## 🔧 Parámetros de Configuración
+## Parámetros de Configuración
 
 ### Configuración en Base de Datos
 
@@ -612,7 +539,7 @@ MAX_SILENCE_MINUTES = 10  # Reconectar si no hay lecturas exitosas
 
 ---
 
-## 🛡️ Sistema de Auto-Recuperación
+## Sistema de Auto-Recuperación
 
 El sistema implementa 3 niveles de recuperación ante fallos:
 
@@ -657,8 +584,8 @@ MAX_CONSECUTIVE_ERRORS = 15
 ```
 10 reconexiones en 1 hora
     ↓
-🚨 ACTIVAR CIRCUIT BREAKER
-    ↓
+ACTIVAR CIRCUIT BREAKER
+   ↓
 Pausar intentos 5 minutos
     ↓
 Crear alarma en BD
@@ -676,7 +603,7 @@ CIRCUIT_BREAKER_PAUSE = 300     # segundos
 
 ---
 
-## 📈 Monitoreo y Métricas
+## Monitoreo y Métricas
 
 ### Ver Estado en Tiempo Real
 
@@ -691,7 +618,7 @@ python3 meter_cli.py status 1
 # ┌────────────────────────────────────────────┐
 # │  Medidor: Medidor_Principal (ID: 1)       │
 # │  IP: 192.168.1.128:3333                    │
-# │  Estado: 🟢 ACTIVO                          │
+# │  Estado: ACTIVO                          │
 # ├────────────────────────────────────────────┤
 # │  Tasa de Éxito DLMS:  ████████░░ 95.2%    │
 # │  Tasa Publicación MQTT: █████████░ 99.8%  │
@@ -775,7 +702,7 @@ conn.close()
 
 ---
 
-## 🔍 Solución de Problemas
+## Solución de Problemas
 
 ### Problema 1: Error de Instalación de Dependencias
 
@@ -914,7 +841,7 @@ python3 dlms_multi_meter_bridge.py  # Crea nueva BD automáticamente
 
 ---
 
-## 📚 Estructura del Proyecto
+## Estructura del Proyecto
 
 ```
 dlms_telemetry_orchestrator/
@@ -922,7 +849,7 @@ dlms_telemetry_orchestrator/
 ├── requirements.txt               # Dependencias Python
 ├── requirements-admin.txt         # Dependencias opcionales admin
 │
-├── dlms_multi_meter_bridge.py    # ⭐ SCRIPT PRINCIPAL
+├── dlms_multi_meter_bridge.py    # SCRIPT PRINCIPAL
 ├── dlms_poller_production.py     # Cliente DLMS optimizado
 ├── dlms_reader.py                # Cliente DLMS base
 ├── tb_mqtt_client.py             # Cliente MQTT ThingsBoard
@@ -965,7 +892,7 @@ dlms_telemetry_orchestrator/
 
 ---
 
-## 🧪 Pruebas y Validación
+## Pruebas y Validación
 
 ### Prueba 1: Conectividad TCP
 
@@ -975,7 +902,7 @@ python3 meter_cli.py test 1
 
 # Salida esperada:
 # Testing TCP connection to 192.168.1.128:3333...
-# ✅ Connection successful
+# Connection successful
 # Response time: 45ms
 ```
 
@@ -996,21 +923,21 @@ poller = ProductionDLMSPoller(
 
 # Conectar
 if poller.connect():
-    print("✅ DLMS connection successful")
+    print("DLMS connection successful")
     
     # Leer una medición
     readings = poller.poll_once()
     
     if readings:
-        print("✅ Readings obtained:")
+        print("Readings obtained:")
         for key, value in readings.items():
             print(f"  {key}: {value}")
     else:
-        print("❌ Failed to read measurements")
+        print("Failed to read measurements")
         
     poller.disconnect()
 else:
-    print("❌ Failed to connect")
+    print("Failed to connect")
 ```
 
 Ejecutar:
@@ -1034,7 +961,7 @@ client = ThingsBoardMQTTClient(
 
 # Conectar
 if client.connect():
-    print("✅ MQTT connected")
+    print("MQTT connected")
     
     # Enviar telemetría de prueba
     test_data = {
@@ -1046,14 +973,14 @@ if client.connect():
     }
     
     if client.send_telemetry(test_data):
-        print("✅ Telemetry sent successfully")
+        print(# Telemetry sent successfully")
     else:
-        print("❌ Failed to send telemetry")
+        print("Failed to send telemetry")
     
     time.sleep(2)
     client.disconnect()
 else:
-    print("❌ Failed to connect to MQTT broker")
+    print("Failed to connect to MQTT broker")
 ```
 
 Ejecutar:
@@ -1081,7 +1008,7 @@ python3 meter_cli.py status 1
 
 ---
 
-## 📊 Formato de Datos
+## Formato de Datos
 
 ### Formato de Telemetría MQTT (JSON)
 
@@ -1156,32 +1083,31 @@ CREATE TABLE alarms (
 
 ---
 
-## 🔒 Consideraciones de Seguridad
+## Consideraciones de Seguridad
 
 ### Credenciales
 
-- ✅ Almacenar passwords DLMS en base de datos (no en código)
-- ✅ Usar tokens únicos por dispositivo en ThingsBoard
-- ⚠️ NO compartir tokens en repositorios públicos
-- ⚠️ Cambiar passwords por defecto en medidores
+- Almacenar passwords DLMS en base de datos (no en código)
+- Usar tokens únicos por dispositivo en ThingsBoard
+- NO compartir tokens en repositorios públicos
+- Cambiar passwords por defecto en medidores
 
 ### Red
-
-- ✅ Usar VLAN segregada para medidores
-- ✅ Configurar firewall para permitir solo puerto 3333
-- ✅ Usar MQTT con TLS/SSL en producción
-- ⚠️ NO exponer medidores directamente a Internet
+- Usar VLAN segregada para medidores
+- Configurar firewall para permitir solo puerto 3333
+- Usar MQTT con TLS/SSL en producción
+- NO exponer medidores directamente a Internet
 
 ### Sistema
 
-- ✅ Ejecutar servicio con usuario no-root
-- ✅ Habilitar `NoNewPrivileges` en systemd
-- ✅ Limitar recursos con `MemoryLimit` y `CPUQuota`
-- ✅ Mantener sistema operativo actualizado
+- Ejecutar servicio con usuario no-root
+- Habilitar `NoNewPrivileges` en systemd
+- Limitar recursos con `MemoryLimit` y `CPUQuota`
+- Mantener sistema operativo actualizado
 
 ---
 
-## 📖 Referencias
+## Referencias
 
 ### Estándares y Protocolos
 
@@ -1203,40 +1129,22 @@ CREATE TABLE alarms (
 
 ---
 
-## 👥 Contribuciones y Soporte
+## Contribuciones y Soporte
 
 ### Autor
 
 **Brayan Ricardo Pisso Ramírez**  
 Estudiante de Ingeniería Electrónica  
 Universidad Nacional de Colombia - Sede Manizales  
-Email: [tu-email@unal.edu.co]
+Email: bpisso@unal.edu.co
 
 ### Director de Tesis
 
-**[Nombre del Director]**  
-[Título y Cargo]  
-Universidad Nacional de Colombia - Sede Manizales  
-Email: [email-director@unal.edu.co]
-
 ### Repositorio
 
-GitHub: [https://github.com/[tu-usuario]/[nombre-repo]]
+GitHub: [[https://github.com/[tu-usuario]/[nombre-repo]](https://github.com/BRAYANPISSO02/Wi-Fi-HaLow-IoT-Telemetry-Gateway-for-DLMS-COSEM-Smart-Meters/edit/main/dlms_telemetry_orchestrator/README.md)]
 
-### Reporte de Issues
-
-Para reportar problemas o sugerir mejoras:
-1. Ir a la pestaña **Issues** en GitHub
-2. Crear nuevo issue con etiqueta apropiada (`bug`, `enhancement`, `question`)
-3. Incluir:
-   - Descripción detallada del problema
-   - Pasos para reproducir
-   - Logs relevantes
-   - Versión del sistema
-
----
-
-## 📜 Licencia
+## Licencia
 
 [Especificar licencia - MIT, GPL, Apache, etc.]
 
@@ -1248,24 +1156,23 @@ Copyright (c) 2025 Brayan Ricardo Pisso Ramírez
 
 ---
 
-## 🙏 Agradecimientos
+## Agradecimientos
 
 - Universidad Nacional de Colombia - Sede Manizales
-- [Nombre del Director] - Por la dirección y asesoría del proyecto
-- [Otros colaboradores/instituciones si aplica]
+- GUSTAVO ADOLFO OSORIO LONDOÑO - Por la dirección y asesoría del proyecto
 - Comunidad open-source de dlms-cosem, paho-mqtt y ThingsBoard
 
 ---
 
-## 📅 Historial de Versiones
+## Historial de Versiones
 
 ### v2.2.0 (2025-11-19) - Versión Actual
-- ✅ Sistema completo multi-medidor funcional
-- ✅ Auto-recuperación de 3 niveles implementada
-- ✅ Circuit breaker para prevención de loops
-- ✅ CLI de gestión completa
-- ✅ Optimización de velocidad con caché de scalers
-- ✅ Documentación completa
+- Sistema completo multi-medidor funcional
+- Auto-recuperación de 3 niveles implementada
+- Circuit breaker para prevención de loops
+- CLI de gestión completa
+- Optimización de velocidad con caché de scalers
+- Documentación completa
 
 ### v2.1.0 (2025-11-10)
 - Implementación de arquitectura Gateway opcional
@@ -1285,6 +1192,6 @@ Copyright (c) 2025 Brayan Ricardo Pisso Ramírez
 ---
 
 **Última actualización:** 19 de Noviembre 2025  
-**Estado del proyecto:** ✅ Producción - Estable  
+**Estado del proyecto:** Producción - Estable  
 **Versión de documentación:** 2.2.0
 ````
