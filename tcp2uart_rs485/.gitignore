@@ -1,0 +1,38 @@
+# --- WINDOWS (Basura del sistema) ---
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# --- PYTHON (Si tu código es Python) ---
+__pycache__/
+*.py[cod]
+*$py.class
+# Entornos virtuales (venv)
+venv/
+env/
+.env
+
+# --- C++ / ARDUINO / ESP32 (Si usas PlatformIO o Arduino) ---
+.pio/
+debug/
+*.hex
+*.elf
+*.bin
+
+# --- LATEX (Archivos temporales de compilación de tu tesis) ---
+# Es muy importante filtrar estos porque cambian cada vez que compilas
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+*.synctex.gz
+*.toc
+*.fls
+*.fdb_latexmk
+*.bcf
+*.xml
+
+# --- Varios ---
+.vscode/
+.idea/
