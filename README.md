@@ -515,7 +515,7 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
 
 ---
 
-## 📚 Referencias
+## Referencias
 
 ### Estándares y Protocolos
 
@@ -539,7 +539,7 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
 
 ---
 
-## 👥 Autor y Contacto
+## Autor y Contacto
 
 ### Autor
 
@@ -547,9 +547,9 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
 Estudiante de Ingeniería Electrónica  
 Universidad Nacional de Colombia - Sede Manizales
 
-- 📧 Email: brpissor@unal.edu.co
-- 🐙 GitHub: [@BRAYANPISSO02](https://github.com/BRAYANPISSO02)
-- 💼 LinkedIn: [Brayan Pisso](https://linkedin.com/in/brayan-pisso)
+- Email: brpissor@unal.edu.co
+- GitHub: [@BRAYANPISSO02](https://github.com/BRAYANPISSO02)
+- LinkedIn: [Brayan Pisso](https://linkedin.com/in/brayan-pisso)
 
 ### Director de Tesis
 
@@ -559,7 +559,7 @@ Universidad Nacional de Colombia - Sede Manizales
 
 ---
 
-## 🙏 Agradecimientos
+## Agradecimientos
 
 - **Universidad Nacional de Colombia** - Por el apoyo institucional y recursos
 - **Prof. Gustavo Osorio** - Por la dirección y asesoría del proyecto
@@ -569,7 +569,7 @@ Universidad Nacional de Colombia - Sede Manizales
 
 ---
 
-## 📊 Estado del Proyecto
+## Estado del Proyecto
 
 ![Status](https://img.shields.io/badge/status-active-success.svg)
 ![Build](https://img.shields.io/badge/build-passing-brightgreen.svg)
@@ -578,7 +578,7 @@ Universidad Nacional de Colombia - Sede Manizales
 
 **Versión Actual:** 2.2.0  
 **Última Actualización:** 21 de Noviembre de 2025  
-**Estado:** ✅ Producción - Estable
+**Estado:** Producción - Estable
 
 ### Roadmap Futuro
 
@@ -596,7 +596,5 @@ Universidad Nacional de Colombia - Sede Manizales
 **[⬆ Volver arriba](#Wi-Fi-HaLow-IoT-Telemetry-Gateway-for-DLMS-COSEM-Smart-Meters)**
 
 ---
-
-*Desarrollado con ❤️ en la Universidad Nacional de Colombia*
 
 </div>
