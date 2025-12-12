@@ -17,6 +17,8 @@ El firmware levanta un servidor TCP en el ESP32-C6 que escucha conexiones entran
 *   **Almacenamiento:** Persistencia de credenciales en NVS (Non-Volatile Storage).
 *   **Seguridad:** Timeout de inactividad (30s) para liberación de sockets huérfanos.
 
+<img width="781" height="641" alt="Arquitectura interna de la capa de transmisión drawio (1)" src="https://github.com/user-attachments/assets/24b695db-cd00-43af-ab27-ab174080f679" />
+
 ## Hardware y Pinout
 
 Se requiere un módulo transceptor RS485 (ej. MAX485 o MAX3485) para la conversión de niveles lógicos TTL a diferenciales.
