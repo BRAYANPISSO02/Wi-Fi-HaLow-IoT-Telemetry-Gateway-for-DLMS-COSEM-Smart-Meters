@@ -1,17 +1,17 @@
 # Sistema de Infraestructura IoT con ThingsBoard CE
 
-## 📋 Información del Proyecto
+## Información del Proyecto
 
 **Institución:** Universidad Nacional de Colombia  
 **Programa:** Pregrado en Ingeniería Electrónica  
-**Proyecto:** SmartMeter2ThingsBoard.Gateway  
+**Proyecto:** Wi-Fi-HaLow-IoT-Telemetry-Gateway-for-DLMS-COSEM-Smart-Meters  
 **Autor(es):** Brayan Ricardo Pisso Ramírez  
 **Director:** Gustavo Adolfo Osorio Londoño  
 **Año:** 2025
 
 ---
 
-## 📖 Tabla de Contenidos
+## Tabla de Contenidos
 
 - [Descripción General](#-descripción-general)
 - [Arquitectura del Sistema](#-arquitectura-del-sistema)
@@ -27,19 +27,19 @@
 
 ---
 
-## 🎯 Descripción General
+## Descripción General
 
 Este proyecto implementa una **plataforma de infraestructura IoT (Internet of Things)** basada en **ThingsBoard Community Edition** utilizando contenedores Docker. La plataforma está diseñada para recibir, procesar, almacenar y visualizar datos de telemetría provenientes de dispositivos IoT, específicamente medidores inteligentes (Smart Meters).
 
 ### Características Principales
 
-- ✅ **Servidor ThingsBoard CE 4.2.1** - Plataforma IoT completa con interfaz web
-- ✅ **Base de Datos PostgreSQL 16** - Almacenamiento persistente de datos
-- ✅ **Sistema de Mensajería Kafka 4.0** - Procesamiento asíncrono de eventos
-- ✅ **Soporte Multi-Protocolo** - MQTT, LwM2M/CoAP, HTTP REST API
-- ✅ **Alta Disponibilidad** - Reinicio automático de servicios
-- ✅ **Seguridad SSL/TLS** - Certificados para comunicación cifrada (opcional)
-- ✅ **Gestión Simplificada** - Scripts shell para operaciones comunes
+- **Servidor ThingsBoard CE 4.2.1** - Plataforma IoT completa con interfaz web
+- **Base de Datos PostgreSQL 16** - Almacenamiento persistente de datos
+- **Sistema de Mensajería Kafka 4.0** - Procesamiento asíncrono de eventos
+- **Soporte Multi-Protocolo** - MQTT, LwM2M/CoAP, HTTP REST API
+- **Alta Disponibilidad** - Reinicio automático de servicios
+- **Seguridad SSL/TLS** - Certificados para comunicación cifrada (opcional)
+- **Gestión Simplificada** - Scripts shell para operaciones comunes
 
 ### Protocolos Soportados
 
@@ -53,47 +53,11 @@ Este proyecto implementa una **plataforma de infraestructura IoT (Internet of Th
 
 ---
 
-## 🏗️ Arquitectura del Sistema
+## Arquitectura del Sistema
 
 ### Diagrama de Componentes
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                      DISPOSITIVOS IoT                           │
-│  Smart Meters │ Sensores │ Actuadores │ Gateways              │
-└────────────┬────────────────────────────────────────────────────┘
-             │ MQTT (1883) / LwM2M (5683)
-             ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                   THINGSBOARD CE (Puerto 8080)                  │
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────┐   │
-│  │ MQTT Server │  │ LwM2M Server│  │  HTTP REST API      │   │
-│  │  (1883)     │  │   (5683)    │  │  Web UI (8080)      │   │
-│  └──────┬──────┘  └──────┬──────┘  └──────┬──────────────┘   │
-│         │                 │                 │                   │
-│         └─────────────────┴─────────────────┘                   │
-│                           ▼                                     │
-│                 ┌──────────────────┐                           │
-│                 │  Rule Engine     │  Procesamiento            │
-│                 │  Telemetry       │  de Reglas                │
-│                 └────────┬─────────┘                           │
-└──────────────────────────┼─────────────────────────────────────┘
-                           │
-                           ▼
-          ┌────────────────────────────────┐
-          │     KAFKA (Puerto 9092)        │  Cola de
-          │   Sistema de Mensajería        │  Mensajes
-          └────────────────┬───────────────┘
-                           │
-                           ▼
-          ┌────────────────────────────────┐
-          │  POSTGRESQL (Puerto 5432)      │  Base de
-          │    - Dispositivos              │  Datos
-          │    - Telemetría                │  Persistente
-          │    - Configuración             │
-          │    - Usuarios y Dashboards     │
-          └────────────────────────────────┘
-```
+<img width="794" height="856" alt="Arquitectura interna de la capa de plataforma IoT drawio (7)" src="https://github.com/user-attachments/assets/cb408a14-444b-47c0-803f-0955ee66a273" />
 
 ### Descripción de Componentes
 
@@ -130,7 +94,7 @@ Este proyecto implementa una **plataforma de infraestructura IoT (Internet of Th
 
 ---
 
-## 💻 Requisitos del Sistema
+## Requisitos del Sistema
 
 ### Hardware Mínimo
 
@@ -183,13 +147,13 @@ Asegúrate de que los siguientes puertos estén **libres** (no utilizados por ot
 
 | Puerto | Protocolo | Servicio | Crítico |
 |--------|-----------|----------|---------|
-| 8080 | TCP | ThingsBoard HTTP | ✅ Sí |
-| 1883 | TCP | MQTT | ✅ Sí |
-| 5683 | UDP | LwM2M CoAP | ⚠️ Opcional |
-| 5687 | UDP | LwM2M Bootstrap | ⚠️ Opcional |
-| 8883 | TCP | MQTTs (SSL) | ⚠️ Opcional |
-| 9092 | TCP | Kafka | ✅ Sí |
-| 5432 | TCP | PostgreSQL | ✅ Sí |
+| 8080 | TCP | ThingsBoard HTTP | Sí |
+| 1883 | TCP | MQTT | Sí |
+| 5683 | UDP | LwM2M CoAP | Opcional |
+| 5687 | UDP | LwM2M Bootstrap | Opcional |
+| 8883 | TCP | MQTTs (SSL) | Opcional |
+| 9092 | TCP | Kafka | Sí |
+| 5432 | TCP | PostgreSQL | Sí |
 
 **Verificar puertos libres:**
 ```bash
@@ -199,7 +163,7 @@ sudo ss -tulnp | grep -E "8080|1883|9092|5432"
 
 ---
 
-## 🚀 Instalación
+## Instalación
 
 ### Paso 1: Instalar Docker y Docker Compose
 
@@ -247,12 +211,12 @@ docker compose version
 
 ```bash
 # Opción A: Si tienes acceso al repositorio Git
-git clone https://github.com/BRAYANPISSO02/SmartMeter2ThingsBoard-Gateway.git
-cd SmartMeter2ThingsBoard-Gateway/thingsboard_telemetry_docker
+git clone https://github.com/BRAYANPISSO02/Wi-Fi-HaLow-IoT-Telemetry-Gateway-for-DLMS-COSEM-Smart-Meters.git
+cd Wi-Fi-HaLow-IoT-Telemetry-Gateway-for-DLMS-COSEM-Smart-Meters/thingsboard_telemetry_docker
 
 # Opción B: Si tienes el proyecto como archivo
-unzip SmartMeter2ThingsBoard-Gateway.zip
-cd SmartMeter2ThingsBoard-Gateway/thingsboard_telemetry_docker
+unzip Wi-Fi-HaLow-IoT-Telemetry-Gateway-for-DLMS-COSEM-Smart-Meters.zip
+cd Wi-Fi-HaLow-IoT-Telemetry-Gateway-for-DLMS-COSEM-Smart-Meters/thingsboard_telemetry_docker
 ```
 
 ### Paso 3: Estructura del Proyecto
@@ -281,7 +245,7 @@ thingsboard_telemetry_visualization/
 
 ---
 
-## ⚙️ Configuración
+## Configuración
 
 ### Configuración Básica (Predeterminada)
 
@@ -325,7 +289,7 @@ environment:
   POSTGRES_PASSWORD: tu_password    # Cambiar aquí
 ```
 
-**⚠️ Importante:** Si cambias el password, también cámbialo en:
+**Importante:** Si cambias el password, también cámbialo en:
 ```yaml
 # Línea ~65
 SPRING_DATASOURCE_PASSWORD: tu_password
@@ -348,11 +312,11 @@ El reinicio automático está **habilitado por defecto** en todos los servicios:
 ```yaml
 services:
   postgres:
-    restart: always      # 👈 Reinicio automático
+    restart: always      # Reinicio automático
   kafka:
-    restart: always      # 👈 Reinicio automático
+    restart: always      # Reinicio automático
   thingsboard-ce:
-    restart: always      # 👈 Reinicio automático
+    restart: always      # Reinicio automático
 ```
 
 **Opciones de política de reinicio:**
@@ -368,7 +332,7 @@ services:
 
 ---
 
-## 🎮 Ejecución y Uso
+## Ejecución y Uso
 
 ### Inicio del Sistema (Primera Vez)
 
@@ -462,7 +426,7 @@ URL: http://localhost:8080
 | **Tenant Administrator** | `tenant@thingsboard.org` | `tenant` | Administración del tenant (recomendado) |
 | **Customer User** | `customer@thingsboard.org` | `customer` | Usuario final (solo lectura) |
 
-**⚠️ SEGURIDAD:** Cambia estas contraseñas inmediatamente en producción.
+**SEGURIDAD:** Cambia estas contraseñas inmediatamente en producción.
 
 #### Paso 3: Explorar la interfaz
 
@@ -505,15 +469,15 @@ cd thingsboard_telemetry_visualization
 **Esto detiene los contenedores pero NO borra los datos.**
 
 **Datos que permanecen:**
-- ✅ Base de datos PostgreSQL (volumen `tb-postgres-data`)
-- ✅ Datos de Kafka (volumen `tb-ce-kafka-data`)
-- ✅ Configuración del sistema
-- ✅ Dispositivos registrados
-- ✅ Dashboards creados
+- Base de datos PostgreSQL (volumen `tb-postgres-data`)
+- Datos de Kafka (volumen `tb-ce-kafka-data`)
+- Configuración del sistema
+- Dispositivos registrados
+- Dashboards creados
 
 ---
 
-## 🛠️ Gestión del Sistema
+## Gestión del Sistema
 
 ### Comandos de Operación Diaria
 
@@ -551,15 +515,15 @@ docker compose logs --tail 50 thingsboard-ce
 
 ---
 
-## 📂 Estructura del Proyecto
+## Estructura del Proyecto
 
 ```
-SmartMeter2ThingsBoard-Gateway/
+Wi-Fi-HaLow-IoT-Telemetry-Gateway-for-DLMS-COSEM-Smart-Meters/
 └── thingsboard_telemetry_docker/
     ├── README_PROYECTO_GRADO.md               # Este archivo
     ├── QUE_HAY_REALMENTE.md                   # Documentación de componentes
     │
-    └── thingsboard_telemetry_visualization/   # ⭐ Directorio principal
+    └── thingsboard_telemetry_visualization/   # Directorio principal
         ├── docker-compose.yml                 # Configuración de servicios
         ├── up.sh                              # Iniciar sistema
         ├── down.sh                            # Detener sistema
@@ -574,19 +538,19 @@ SmartMeter2ThingsBoard-Gateway/
 
 ---
 
-## 🔧 Solución de Problemas
+## Solución de Problemas
 
 Ver documento completo en el archivo principal del proyecto.
 
 ---
 
-## 🔐 Seguridad y SSL/TLS
+## Seguridad y SSL/TLS
 
 Ver sección de seguridad en el documento principal.
 
 ---
 
-## 📚 Referencias
+## Referencias
 
 ### Documentación Oficial
 
@@ -596,11 +560,11 @@ Ver sección de seguridad en el documento principal.
 
 ---
 
-## 📞 Contacto
+## Contacto
 
-**Autor:** [Tu Nombre]  
-**Email:** [tu.email@universidad.edu]  
-**Universidad:** [Tu Universidad]  
+**Autor:** BRAYAN RICARDO PISSO RAMÍREZ  
+**Email:** bpisso@unal.edu.co 
+**Universidad:** UNIVERSIDAD NACIONAL DE COLOMBIA - SEDE MANIZALES  
 
 ---
 
