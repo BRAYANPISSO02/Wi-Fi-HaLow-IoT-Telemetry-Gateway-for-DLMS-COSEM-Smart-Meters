@@ -8,7 +8,7 @@
 
 ---
 
-## Resumen Ejecutivo
+## Resumen
 
 Este proyecto implementa un **sistema de telemetría IoT** para la adquisición, transmisión y almacenamiento de datos eléctricos en tiempo real desde medidores inteligentes que implementan el protocolo **DLMS/COSEM** (Device Language Message Specification/Companion Specification for Energy Metering). 
 
