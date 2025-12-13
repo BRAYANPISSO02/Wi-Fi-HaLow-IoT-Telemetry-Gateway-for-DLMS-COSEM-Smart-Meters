@@ -564,32 +564,6 @@ Universidad Nacional de Colombia - Sede Manizales
 
 ---
 
-## Estado del Proyecto
-
-![Status](https://img.shields.io/badge/status-active-success.svg)
-![Build](https://img.shields.io/badge/build-passing-brightgreen.svg)
-![Coverage](https://img.shields.io/badge/coverage-85%25-green.svg)
-![Version](https://img.shields.io/badge/version-2.2.0-blue.svg)
-
-**Versión Actual:** 2.2.0  
-**Última Actualización:** 21 de Noviembre de 2025  
-**Estado:** Producción - Estable
-
-### Roadmap Futuro
-
-- [ ] Soporte para protocolo Modbus RTU/TCP
-- [ ] Integración con AWS IoT Core
-- [ ] Dashboard móvil (Flutter)
-- [ ] Machine Learning para predicción de consumo
-- [ ] API GraphQL
-- [ ] Soporte para múltiples tenants
-
----
-
-<div align="center">
-
-**[⬆ Volver arriba](#Wi-Fi-HaLow-IoT-Telemetry-Gateway-for-DLMS-COSEM-Smart-Meters)**
-
 ---
 
 </div>
