@@ -1,4 +1,4 @@
-# Pasarela Industrial TCP/IP a RS485 sobre WiFi (ESP32-C6)
+# Puente TCP/IP a RS485 sobre WiFi (ESP32-C6)
 
 Este repositorio contiene el firmware para un dispositivo **Gateway IoT** desarrollado sobre el SoC **ESP32-C6** (arquitectura RISC-V). El sistema actúa como un puente transparente bidireccional entre una red **TCP/IP** y un bus de campo industrial **RS485**, permitiendo la integración de sensores, actuadores o PLCs antiguos en infraestructuras de red modernas inalámbricas (WiFi).
 
